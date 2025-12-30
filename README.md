@@ -1,56 +1,56 @@
-# Bypassing CAPTCHAs With Selenium in Python
+# PythonのSeleniumでCAPTCHAを回避する
 
-[![Promo](https://github.com/luminati-io/LinkedIn-Scraper/raw/main/Proxies%20and%20scrapers%20GitHub%20bonus%20banner.png)](https://brightdata.com/)
+[![Promo](https://github.com/luminati-io/LinkedIn-Scraper/raw/main/Proxies%20and%20scrapers%20GitHub%20bonus%20banner.png)](https://brightdata.jp/)
 
-This guide explains how to bypass CAPTCHAs in Selenium:
+本ガイドでは、SeleniumでCAPTCHAを回避する方法を解説します。
 
-- [Common CAPTCHA Types](#common-captcha-types)
-- [Selenium CAPTCHA Handling: Step-By-Step Tutorial](#selenium-captcha-handling-step-by-step-tutorial)
-  - [Step #1: Create a New Python Project](#step-1-create-a-new-python-project)
-  - [Step #2: Install Selenium](#step-2-install-selenium)
-  - [Step #3: Set Up Your Selenium Script](#step-3-set-up-your-selenium-script)
-  - [Step #4: Add the Browser Automation Logic](#step-4-add-the-browser-automation-logic)
-  - [Step #5: Install the Selenium Stealth Plugin](#step-5-install-the-selenium-stealth-plugin)
-  - [Step #6: Configure the Stealth Settings to Avoid CAPTCHAs](#step-6-configure-the-stealth-settings-to-avoid-captchas)
-  - [Step #7: Repeat the Bot Detection Test](#step-7-repeat-the-bot-detection-test)
- - [What If the Above Solution Does Not Work](#what-if-the-above-solution-does-not-work)
-
-
-## What Are CAPTCHAs?
+- [一般的なCAPTCHAの種類](#common-captcha-types)
+- [SeleniumでのCAPTCHA対処：ステップバイステップチュートリアル](#selenium-captcha-handling-step-by-step-tutorial)
+  - [ステップ #1：新しいPythonプロジェクトを作成する](#step-1-create-a-new-python-project)
+  - [ステップ #2：Seleniumをインストールする](#step-2-install-selenium)
+  - [ステップ #3：Seleniumスクリプトをセットアップする](#step-3-set-up-your-selenium-script)
+  - [ステップ #4：ブラウザ自動化ロジックを追加する](#step-4-add-the-browser-automation-logic)
+  - [ステップ #5：Selenium Stealthプラグインをインストールする](#step-5-install-the-selenium-stealth-plugin)
+  - [ステップ #6：CAPTCHAを回避するためにStealth設定を構成する](#step-6-configure-the-stealth-settings-to-avoid-captchas)
+  - [ステップ #7：ボット検出テストを再実行する](#step-7-repeat-the-bot-detection-test)
+ - [上記の解決策が機能しない場合](#what-if-the-above-solution-does-not-work)
 
 
-A [**CAPTCHA**](https://brightdata.com/blog/web-data/what-is-a-captcha) (Completely Automated Public Turing test to tell Computers and Humans Apart) is used to distinguish human users from bots. It presents challenges that are easy for humans but difficult for machines. Common providers include Google reCAPTCHA, hCaptcha, and BotDetect.
+## CAPTCHAとは？
+
+
+[**CAPTCHA**](https://brightdata.jp/blog/web-data/what-is-a-captcha)（Completely Automated Public Turing test to tell Computers and Humans Apart）は、人間のユーザーとボットを区別するために使用されます。人間には簡単ですが機械には難しい課題を提示します。代表的なプロバイダーには、Google reCAPTCHA、hCaptcha、BotDetect などがあります。
 
 ## Common CAPTCHA Types
 
-- **Text-based**: Enter distorted letters/numbers.  
-- **Image-based**: Identify specific objects in a grid.  
-- **Audio-based**: Type words from an audio clip.  
-- **Puzzle-based**: Solve simple puzzles (e.g., mazes).  
+- **Text-based**: 歪んだ文字/数字を入力します。  
+- **Image-based**: グリッド内の特定オブジェクトを識別します。  
+- **Audio-based**: 音声クリップの単語を入力します。  
+- **Puzzle-based**: 簡単なパズル（例：迷路）を解きます。  
 
 ![Text CAPTCHA example](https://github.com/luminati-io/bypass-captcha-with-selenium/blob/main/images/Text-CAPTCHA-example.png)
 
-Often, CAPTCHAs appear at the final step of form submissions:
+多くの場合、CAPTCHAはフォーム送信の最終ステップで表示されます。
 
 ![CAPTCHA in form submission](https://github.com/luminati-io/bypass-captcha-with-selenium/blob/main/images/CAPTCHA-as-a-step-of-a-form-submission-process-example.png)
 
-They prevent automated bots from completing actions. While CAPTCHA-solving services exist, hard-coded CAPTCHAs are rare due to **poor user experience**.
+これは、自動化ボットがアクションを完了するのを防ぐためです。CAPTCHA解決サービスは存在しますが、**ユーザー体験が悪い**ため、ハードコードされたCAPTCHAは稀です。
 
-CAPTCHAs are part of broader security measures like **Web Application Firewalls (WAFs)**:
+CAPTCHAは、**Web Application Firewalls (WAFs)** のようなより広範なセキュリティ対策の一部です。
 
 ![Web Application Firewall](https://github.com/luminati-io/bypass-captcha-with-selenium/blob/main/images/Example-of-a-Web-Application-Firewall-1024x488.png)
 
-These systems trigger CAPTCHAs when detecting suspicious activity. To bypass them, bots must **mimic human behavior**, which requires frequent script updates. 
+これらのシステムは、不審なアクティビティを検知するとCAPTCHAをトリガーします。これらを回避するには、ボットが**人間の行動を模倣**する必要があり、そのためにはスクリプトの頻繁な更新が必要です。 
 
 ## Selenium CAPTCHA Handling: Step-By-Step Tutorial
 
-One of the best tools to mimic human behavior while controlling a browser for is [Selenium](https://www.selenium.dev/), a popular browser automation library. Let's learn how to avoid CAPTCHAs in Selenium using a Python script.
+ブラウザを制御しながら人間の行動を模倣するための最良のツールの1つが、人気のブラウザ自動化ライブラリである [Selenium](https://www.selenium.dev/) です。Pythonスクリプトを使って、SeleniumでCAPTCHAを回避する方法を学びましょう。
 
 ### Step #1: Create a New Python Project
 
-You will need Python 3 and Crhome installed locally to follow this guide.
+本ガイドに従うには、ローカルに Python 3 と Crhome がインストールされている必要があります。
 
-If you already have a Selenium web scraping or testing script, skip the first three steps. Otherwise, create a folder for your Selenium CAPTCHA bypass demo project and navigate to it in the terminal window:
+すでにSeleniumのWebスクレイピングまたはテスト用スクリプトをお持ちの場合は、最初の3ステップをスキップしてください。そうでない場合は、SeleniumのCAPTCHA回避デモプロジェクト用のフォルダを作成し、ターミナルウィンドウでそこに移動します。
 
 ```bash
 mkdir selenium_demo
@@ -58,31 +58,31 @@ mkdir selenium_demo
 cd selenium_demo
 ```
 
-Next, add a new [Python virtual environment](https://docs.python.org/3/library/venv.html) inside it:
+次に、その中に新しい [Python virtual environment](https://docs.python.org/3/library/venv.html) を追加します。
 
 ```bash
 python -m venv venv
 ```
 
-Open the project’s folder in your favorite Python IDE and create a new file named `script.py`.
+お好みのPython IDEでプロジェクトフォルダを開き、`script.py` という名前の新しいファイルを作成します。
 
 ### Step #2: Install Selenium
 
-Activate the [Python virtual environment](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#activate-a-virtual-environment).
+[Python virtual environment](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#activate-a-virtual-environment) を有効化します。
 
-On Windows:
+Windowsの場合：
 
 ```powershell
 venv\Scripts\activate
 ```
 
-On Linux or macOS:
+LinuxまたはmacOSの場合：
 
 ```bash
 source venv/bin/activate
 ```
 
-Install Selenium:
+Seleniumをインストールします。
 
 ```bash
 pip install selenium
@@ -90,13 +90,13 @@ pip install selenium
 
 ### Step #3: Set Up Your Selenium Script
 
-Import Selenium by adding the following line to `script.py`:
+`script.py` に次の行を追加してSeleniumをインポートします。
 
 ```python
 from selenium import webdriver
 ```
 
-Create a [`ChromeOptions`](https://selenium-python.readthedocs.io/api.html#module-selenium.webdriver.chrome.options) object to configure Chrome to start in headless mode:
+Chromeをヘッドレスモードで起動するように構成するため、[`ChromeOptions`](https://selenium-python.readthedocs.io/api.html#module-selenium.webdriver.chrome.options) オブジェクトを作成します。
 
 ```python
 options = webdriver.ChromeOptions()
@@ -104,7 +104,7 @@ options = webdriver.ChromeOptions()
 options.add_argument("--headless")
 ```
 
-Initialize a [Chrome WebDriver](https://selenium-python.readthedocs.io/api.html#module-selenium.webdriver.chrome.webdriver) instance with these options, and finally close it with `quit()`. This is what your current `script.py` file should currently look like:
+これらのオプションで [Chrome WebDriver](https://selenium-python.readthedocs.io/api.html#module-selenium.webdriver.chrome.webdriver) インスタンスを初期化し、最後に `quit()` で閉じます。現時点の `script.py` は次のようになるはずです。
 
 ```python
 from selenium import webdriver
@@ -126,19 +126,19 @@ driver = webdriver.Chrome(options=options)
 driver.quit()
 ```
 
-The above script launches a new Chrome instance in headless mode before closing the browser.
+上記スクリプトは、ヘッドレスモードで新しいChromeインスタンスを起動し、その後ブラウザを閉じます。
 
 ### Step #4: Add the Browser Automation Logic
 
-To test Selenium CAPTCHA bypass logic, the script will connect to **[bot.sannysoft.com](https://bot.sannysoft.com/)** and capture a screenshot. This page runs various tests to detect whether the visitor is a human or a bot. When accessed via a standard browser, all tests pass.
+SeleniumのCAPTCHA回避ロジックをテストするために、スクリプトは **[bot.sannysoft.com](https://bot.sannysoft.com/)** に接続してスクリーンショットを取得します。このページでは、訪問者が人間かボットかを検出するためのさまざまなテストが実行されます。標準的なブラウザでアクセスすると、すべてのテストに合格します。
 
-Use the [`get()`](https://selenium-python.readthedocs.io/api.html#selenium.webdriver.remote.webdriver.WebDriver.get) method to instruct Chrome to visit the target page:
+Chromeに対象ページへアクセスさせるには、[`get()`](https://selenium-python.readthedocs.io/api.html#selenium.webdriver.remote.webdriver.WebDriver.get) メソッドを使用します。
 
 ```python
 driver.get("https://bot.sannysoft.com/")
 ```
 
-Selenium does not provide a built-in function to capture a full-page screenshot. As a workaround, adjust the browser window size to match the `<body>` dimensions before taking a screenshot.
+Seleniumにはページ全体のスクリーンショットを取得する組み込み関数がありません。回避策として、スクリーンショットを撮る前にブラウザウィンドウサイズを `<body>` のサイズに合わせて調整します。
 
 
 ```python
@@ -161,9 +161,9 @@ driver.save_screenshot("screenshot.png")
 driver.set_window_size(original_size["width"], original_size["height"])
 ```
 
-The above trick will do, and `screenshot.png` will contain the screenshot of the entire page.
+上記の工夫で十分であり、`screenshot.png` にはページ全体のスクリーンショットが含まれます。
 
-Put it all together, and you will have the following logic:
+これらをまとめると、次のロジックになります。
 
 ```python
 from selenium import webdriver
@@ -209,33 +209,33 @@ driver.set_window_size(original_size["width"], original_size["height"])
 driver.quit()
 ```
 
-Launch the `script.py` file above with this command:
+上記の `script.py` をこのコマンドで起動します。
 
 ```bash
 python script.py
 ```
 
-The script launches a **Chromium instance in headless mode**, navigates to the target page, captures a screenshot, and then closes the browser. After execution, a `screenshot.png` file will appear in the project root folder.
+スクリプトは **ヘッドレスモードのChromiumインスタンス** を起動し、対象ページに移動してスクリーンショットを取得し、その後ブラウザを閉じます。実行後、プロジェクトのルートフォルダに `screenshot.png` ファイルが作成されます。
 
 ![screenshot.png file example](https://github.com/luminati-io/bypass-captcha-with-selenium/blob/main/images/screenshot.png-file-example-206x1024.png)
 
-As shown by the red boxes, Chrome in headless mode fails multiple detection tests. This means your script is likely flagged as a bot, leading to CAPTCHA challenges on protected sites.
+赤枠で示されているとおり、ヘッドレスモードのChromeは複数の検出テストに失敗します。つまり、スクリプトがボットとしてフラグ付けされる可能性が高く、保護されたサイトではCAPTCHAチャレンジにつながります。
 
-To avoid detection and prevent CAPTCHAs, use the Stealth plugin.
+検出を回避してCAPTCHAを防ぐには、Stealthプラグインを使用します。
 
 ### Step #5: Install the Selenium Stealth Plugin
 
-[Selenium Stealth](https://github.com/diprajpatra/selenium-stealth) is a Python package that reduces the likelihood of Chrome/Chromium being detected as a bot when controlled by Selenium. It helps bypass anti-bot detection by modifying browser properties to prevent automation leaks.
+[Selenium Stealth](https://github.com/diprajpatra/selenium-stealth) は、Seleniumで制御されたChrome/Chromiumがボットとして検出される可能性を下げるPythonパッケージです。ブラウザのプロパティを変更して自動化の痕跡（automation leaks）を防ぐことで、アンチボット検出の回避に役立ちます。
 
-Selenium Stealth alters various browser attributes to mimic human behavior and avoid detection. It functions similarly to Puppeteer Stealth but is designed for Selenium.
+Selenium Stealthは、人間の行動を模倣して検出を回避するために、さまざまなブラウザ属性を変更します。Puppeteer Stealthと似たように機能しますが、Selenium向けに設計されています。
 
-Install Selenium Stealth via `pip`:
+`pip` でSelenium Stealthをインストールします。
 
 ```sh
 pip install selenium-stealth
 ```
 
-Then, import the library by adding this line to the `script.py` file:
+次に、`script.py` ファイルにこの行を追加してライブラリをインポートします。
 
 ```python
 from selenium_stealth import stealth
@@ -243,7 +243,7 @@ from selenium_stealth import stealth
 
 ### Step #6: Configure the Stealth Settings to Avoid CAPTCHAs
 
-To register Selenium Stealth and configure the Chrome WebDriver to avoid CAPTCHAs, call the `stealth()` function:
+Selenium Stealthを登録し、CAPTCHAを回避するようにChrome WebDriverを構成するには、`stealth()` 関数を呼び出します。
 
 ```python
 stealth(
@@ -267,13 +267,13 @@ fix_hairline=True,
 )
 ```
 
-Set the function arguments as needed, but note that the values above are sufficient to bypass most anti-bot defenses.
+必要に応じて関数引数を設定してください。ただし、上記の値でほとんどのアンチボット防御を回避するには十分である点に注意してください。
 
-With these settings, the Selenium-controlled browser will mimic a real user’s browser.
+これらの設定により、Seleniumで制御されるブラウザは実ユーザーのブラウザを模倣します。
 
 ### Step #7: Repeat the Bot Detection Test
 
-Below is the final `script.js` file:
+以下が最終的な `script.js` ファイルです。
 
 ```python
 from selenium import webdriver
@@ -345,30 +345,30 @@ driver.set_window_size(original_size["width"], original_size["height"])
 driver.quit()
 ```
 
-Execute the bypass CAPTCHA Selenium Python script again:
+CAPTCHA回避のSelenium Pythonスクリプトを再度実行します。
 
 ```bash
 python script.py
 ```
 
-Take a look at `screenshot.png`, and you will notice that all bot detection tests have been passed:
+` screenshot.png` を確認すると、すべてのボット検出テストに合格していることがわかります。
 
 ![All bot detection tests passed on the new screenshot.png](https://github.com/luminati-io/bypass-captcha-with-selenium/blob/main/images/All-bot-detction-tests-passed-on-the-new-screenshot-249x1024.png)
 
 ## What If the Above Solution Does Not Work?
 
-Anti-bot systems don’t just analyze browser settings—IP reputation is crucial. Simply switching IPs with a free library won’t work; you need Selenium proxy integration.
+アンチボットシステムはブラウザ設定だけを分析するわけではありません。IPレピュテーションが重要です。無料ライブラリでIPを切り替えるだけではうまくいきません。Seleniumへのプロキシ統合が必要です。
 
-Even with an optimally configured browser, CAPTCHAs may still appear. For basic reCAPTCHA v2 challenges, you can try [selenium-recaptcha-solver](https://pypi.org/project/selenium-recaptcha/), but these libraries are outdated and limited.
+最適に構成されたブラウザでも、CAPTCHAが表示されることがあります。基本的な reCAPTCHA v2 チャレンジであれば、[selenium-recaptcha-solver](https://pypi.org/project/selenium-recaptcha/) を試せますが、これらのライブラリは古く、制限があります。
 
-Basic methods fail against complex anti-bot systems like Cloudflare. For a robust solution, use Bright Data’s web scraping tools, which support  reCAPTCHA, hCaptcha, px_captcha, SimpleCaptcha, GeeTest, FunCaptcha, Cloudflare Turnstile, AWS WAF Captcha, KeyCAPTCHA, and more.
+基本的な手法は、Cloudflareのような複雑なアンチボットシステムに対しては通用しません。堅牢な解決策としては、reCAPTCHA、hCaptcha、px_captcha、SimpleCaptcha、GeeTest、FunCaptcha、Cloudflare Turnstile、AWS WAF Captcha、KeyCAPTCHA などに対応する Bright Data のWebスクレイピングツールを使用してください。
 
-[Bright Data’s CAPTCHA Solver](https://brightdata.com/products/web-unlocker/captcha-solver) works with any HTTP client or browser automation tool, including Selenium.
+[Bright Data’s CAPTCHA Solver](https://brightdata.jp/products/web-unlocker/captcha-solver) は、Seleniumを含む任意のHTTPクライアントまたはブラウザ自動化ツールで動作します。
 
 ## Conclusion
 
-Thanks to the Selenium Stealth library, you can override the default configurations of Chrome to limit bot detection. However, this approach is not a definitive solution. Advanced bot detection tools will still be able to block you. The real solution is to connect to the target site via an unblocking API that can return the CAPTCHA-free HTML of any web page.
+Selenium Stealthライブラリのおかげで、Chromeのデフォルト設定を上書きしてボット検出を抑制できます。しかし、このアプローチは決定的な解決策ではありません。高度なボット検出ツールは、依然としてブロックできてしまいます。本当の解決策は、CAPTCHAなしの任意のWebページのHTMLを返せるアンブロッキングAPIを介して対象サイトに接続することです。
 
-One of such solutions is [Web Unlocker](https://brightdata.com/products/web-unlocker), a scraping API that automatically rotates your exit IP with each request via proxy integration and handles browser fingerprinting, automatic retries, and CAPTCHA resolution for you. Dealing with CAPTCHAs has never been easier!
+そのような解決策の1つが [Web Unlocker](https://brightdata.jp/products/web-unlocker) です。これはスクレイピングAPIで、プロキシ統合によりリクエストごとに出口IPを自動でローテーションし、ブラウザフィンガープリント、自動リトライ、CAPTCHA解決を処理します。CAPTCHA対応がこれまでになく簡単になります。
 
-Sign up now and start your free trial.
+今すぐサインアップして、無料トライアルを開始してください。
