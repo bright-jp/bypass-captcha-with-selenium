@@ -1,6 +1,6 @@
 # PythonのSeleniumでCAPTCHAを回避する
 
-[![Promo](https://github.com/luminati-io/LinkedIn-Scraper/raw/main/Proxies%20and%20scrapers%20GitHub%20bonus%20banner.png)](https://brightdata.jp/)
+[![Promo](https://github.com/bright-jp/LinkedIn-Scraper/raw/main/Proxies%20and%20scrapers%20GitHub%20bonus%20banner.png)](https://brightdata.jp/)
 
 本ガイドでは、SeleniumでCAPTCHAを回避する方法を解説します。
 
@@ -28,17 +28,17 @@
 - **Audio-based**: 音声クリップの単語を入力します。  
 - **Puzzle-based**: 簡単なパズル（例：迷路）を解きます。  
 
-![Text CAPTCHA example](https://github.com/luminati-io/bypass-captcha-with-selenium/blob/main/images/Text-CAPTCHA-example.png)
+![Text CAPTCHA example](https://github.com/bright-jp/bypass-captcha-with-selenium/blob/main/images/Text-CAPTCHA-example.png)
 
 多くの場合、CAPTCHAはフォーム送信の最終ステップで表示されます。
 
-![CAPTCHA in form submission](https://github.com/luminati-io/bypass-captcha-with-selenium/blob/main/images/CAPTCHA-as-a-step-of-a-form-submission-process-example.png)
+![CAPTCHA in form submission](https://github.com/bright-jp/bypass-captcha-with-selenium/blob/main/images/CAPTCHA-as-a-step-of-a-form-submission-process-example.png)
 
 これは、自動化ボットがアクションを完了するのを防ぐためです。CAPTCHA解決サービスは存在しますが、**ユーザー体験が悪い**ため、ハードコードされたCAPTCHAは稀です。
 
 CAPTCHAは、**Web Application Firewalls (WAFs)** のようなより広範なセキュリティ対策の一部です。
 
-![Web Application Firewall](https://github.com/luminati-io/bypass-captcha-with-selenium/blob/main/images/Example-of-a-Web-Application-Firewall-1024x488.png)
+![Web Application Firewall](https://github.com/bright-jp/bypass-captcha-with-selenium/blob/main/images/Example-of-a-Web-Application-Firewall-1024x488.png)
 
 これらのシステムは、不審なアクティビティを検知するとCAPTCHAをトリガーします。これらを回避するには、ボットが**人間の行動を模倣**する必要があり、そのためにはスクリプトの頻繁な更新が必要です。 
 
@@ -217,7 +217,7 @@ python script.py
 
 スクリプトは **ヘッドレスモードのChromiumインスタンス** を起動し、対象ページに移動してスクリーンショットを取得し、その後ブラウザを閉じます。実行後、プロジェクトのルートフォルダに `screenshot.png` ファイルが作成されます。
 
-![screenshot.png file example](https://github.com/luminati-io/bypass-captcha-with-selenium/blob/main/images/screenshot.png-file-example-206x1024.png)
+![screenshot.png file example](https://github.com/bright-jp/bypass-captcha-with-selenium/blob/main/images/screenshot.png-file-example-206x1024.png)
 
 赤枠で示されているとおり、ヘッドレスモードのChromeは複数の検出テストに失敗します。つまり、スクリプトがボットとしてフラグ付けされる可能性が高く、保護されたサイトではCAPTCHAチャレンジにつながります。
 
@@ -353,7 +353,7 @@ python script.py
 
 ` screenshot.png` を確認すると、すべてのボット検出テストに合格していることがわかります。
 
-![All bot detection tests passed on the new screenshot.png](https://github.com/luminati-io/bypass-captcha-with-selenium/blob/main/images/All-bot-detction-tests-passed-on-the-new-screenshot-249x1024.png)
+![All bot detection tests passed on the new screenshot.png](https://github.com/bright-jp/bypass-captcha-with-selenium/blob/main/images/All-bot-detction-tests-passed-on-the-new-screenshot-249x1024.png)
 
 ## What If the Above Solution Does Not Work?
 
